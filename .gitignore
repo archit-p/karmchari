@@ -1,0 +1,6 @@
+# ignore sublime text files
+*sublime*
+
+# ignore executables
+main
+karmchari
