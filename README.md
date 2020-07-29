@@ -1,4 +1,5 @@
 # Karmchari : REST Job Manager
+[![Build Status](https://travis-ci.org/archit-p/karmchari.svg?branch=master)](https://travis-ci.org/archit-p/karmchari)  
 Karmchari is a job manager written in Go. It allows for adding a job and updating and reading job states through a REST API.
 
 ## Running
