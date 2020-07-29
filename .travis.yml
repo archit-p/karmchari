@@ -1,0 +1,12 @@
+language: go
+
+go:
+  - 1.14.x
+
+install:
+  - go get github.com/archit-p/karmchari
+
+script:
+  - cd $GOPATH/src/github.com/archit-p/karmchari
+  - go build .
+
