@@ -1,11 +1,5 @@
 package main
 
-import (
-	"crypto/md5"
-	"encoding/hex"
-	"time"
-)
-
 // encode integer into a state string
 func encodeState(command int) string {
 	states := []string{ "start", "pause", "kill" }
@@ -29,16 +23,4 @@ func encodeType(jType int) string {
 	}
 
 	return types[jType]
-}
-
-// get unique hash value
-func getHashString() string {
-	// current time for seed
-	t := time.Now().String()
-
-	// generate the hash
-	hashBytes := md5.Sum([]byte(t))
-
-	// return hex encoded string
-	return hex.EncodeToString(hashBytes[:])
 }
