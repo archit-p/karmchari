@@ -21,8 +21,8 @@ type jobMeta struct {
 var jobDict map[string]jobMeta
 
 // a simple way to simulate job table
-// tracks currently running jobes
-// kills marked jobes
+// tracks currently running jobs
+// kills marked jobs
 func trackJobs() {
 	var prevTime, curTime time.Time
 
@@ -53,7 +53,7 @@ func main() {
 	// initialize the jobDict structure
 	jobDict = make(map[string]jobMeta)
 
-	// start a routine to track current jobes
+	// start a routine to track current jobs
 	go trackJobs()
 
 	port := "51463"
