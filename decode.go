@@ -1,31 +1,31 @@
 package main
 
 // decode the state string into an integer
-func decodeState(command string) int {
+func VerifyState(State string) bool {
 	// valid states
 	states := []string{ "start", "pause", "kill" }
 
 	// check whether command is present, and return an encoding
-	for it, c := range states {
-		if command == c {
-			return it
+	for _, c := range states {
+		if State == c {
+			return true
 		}
 	}
 
-	return -1
+	return false
 }
 
 // decode the state string into an integer
-func decodeType(jType string) int {
+func VerifyType(Type string) bool {
 	// valid types
 	types := []string{ "upload", "export", "teams" }
 
 	// check whether command is present, and return an encoding
-	for it, t := range types {
-		if jType == t {
-			return it
+	for _, t := range types {
+		if Type == t {
+			return true
 		}
 	}
 
-	return -1
+	return false
 }

@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/archit-p/karmchari/enc"
 )
 
 // allows for adding a new job
@@ -23,17 +25,16 @@ func registerJob(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// decode the type string into an integer
-	jTypeDec := decodeType(jType)
-	if jTypeDec == -1 {
+	if VerifyType(jType) {
 		w.WriteHeader(400)
 		fmt.Fprintf(w, "Type is invalid")
 	}
 
 	// generate hash for use as job ID
-	pid := getHashString()
+	pid := enc.GetHashString()
 
 	// create an entry
-	jobDict[pid] = jobMeta{ jState : 0, jType : jTypeDec }
+	jobDict[pid] = jobMeta{ State : "start", Type : jType }
 
 	// return success along with pid
 	w.WriteHeader(200)
@@ -63,7 +64,7 @@ func readJobState(w http.ResponseWriter, r *http.Request) {
 
 	// return success along with state
 	w.WriteHeader(200)
-	fmt.Fprintf(w, "%s -- %s", jobId, encodeState(curJob.jState))
+	fmt.Fprintf(w, "%s -- %s", jobId, curJob.State)
 }
 
 // allows for stopping / resuming / killing a job
@@ -100,14 +101,13 @@ func updateJobState(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// check whether the state is valid
-	decState := decodeState(stateCommand)
-	if decState == -1 {
+	if VerifyState(stateCommand) == false {
 		w.WriteHeader(400)
 		fmt.Fprintf(w, "Command is invalid")
 	}
 
 	// update the job state
-	curJob.jState = decState
+	curJob.State = stateCommand
 	jobDict[jobId] = curJob
 
 	// return success

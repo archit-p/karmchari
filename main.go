@@ -13,16 +13,16 @@ import (
 // jState : to denote current state of job
 // jType : to denote the type of job
 type jobMeta struct {
-	jState int
-	jType int
+	Type string
+	State string
 }
 
 // map to store the job states
 var jobDict map[string]jobMeta
 
 // a simple way to simulate job table
-// tracks currently running jobes
-// kills marked jobes
+// tracks currently running jobs
+// kills marked jobs
 func trackJobs() {
 	var prevTime, curTime time.Time
 
@@ -36,9 +36,8 @@ func trackJobs() {
 			fmt.Println("----------------------------------------------------------------")
 
 			for it, job := range jobDict {
-				fmt.Printf("| %34s | %10s | %10s |\n", it, encodeState(job.jState),
-						encodeType(job.jType))
-				if job.jState == 2 {
+				fmt.Printf("| %34s | %10s | %10s |\n", it, job.State, job.Type)
+				if job.State == "kill" {
 					delete(jobDict, it)
 				}
 			}
