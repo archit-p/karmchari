@@ -3,7 +3,12 @@
 [![Redis](https://www.vectorlogo.zone/logos/redis/redis-ar21.svg)](https://redis.io)
 [![Build Status](https://img.shields.io/travis/archit-p/karmchari?style=flat-square)](https://travis-ci.org/archit-p/karmchari)
 [![License](https://img.shields.io/github/license/archit-p/karmchari?style=flat-square)](LICENSE.md)  
-Karmchari is a job manager written in Go. It allows for adding a job and updating and reading job states through a REST API.
+Karmchari is a general purpose job manager written in Go. It allows for adding a job and updating and reading job states through a REST API.
+
+## Usecases
+Having Karmchari maintain a global state of running processes can help give better control on the jobs running on various sytems and workers.
+1. Asynchronously signal workers to pause or kill jobs.
+2. Keep track of long running jobs.
 
 ## Running
 Karmchari uses Redis for data storage. A quick way to run Redis is using its Docker image.
