@@ -1,17 +1,30 @@
 # Karmchari : REST Job Manager
-[![Build Status](https://travis-ci.org/archit-p/karmchari.svg?branch=master)](https://travis-ci.org/archit-p/karmchari)  
+[![Golang](https://www.vectorlogo.zone/logos/golang/golang-ar21.svg)](https://golang.org)
+[![Redis](https://www.vectorlogo.zone/logos/redis/redis-ar21.svg)](https://redis.io)
+[![Build Status](https://img.shields.io/travis/archit-p/karmchari?style=flat-square)](https://travis-ci.org/archit-p/karmchari)
+[![License](https://img.shields.io/github/license/archit-p/karmchari?style=flat-square)](LICENSE.md)  
 Karmchari is a job manager written in Go. It allows for adding a job and updating and reading job states through a REST API.
 
 ## Running
-Perhaps the simplest way to run Karmchari is through the included `Dockerfile`.
+Karmchari uses Redis for data storage. A quick way to run Redis is using its Docker image.
+```bash
+docker run -p 6379:6379 --name redis-karmchari -d redis
+```
+Perhaps the simplest way to run Karmchari is through the included `Dockerfile`, and linking to the redis container.
 ```bash
 docker build -t karmchari .
-docker run -p 51463:51463 -it karmchari
+docker run -p 51463:51463 --name karmchari-prod --link redis-karmchari:redis -d karmchari
 ```
 on Linux based PCs, simply run
 ```bash
 ./docker-build.sh
 ```
+## Options
+```
+port  : port to start the app on ex. 51463
+shost : host for the redis instance ex. localhost:6379
+```
+
 ## Endpoints
 Currently two endpoints are supported - `registerJob` and `jobState`.
 ### 1. registerJob (Method : POST)
@@ -68,5 +81,3 @@ Output: 45c02fc01519814156e94adbd1902279 -- pause
 curl http://localhost:51463/jobState?id=45c02fc01519814156e94adbd1902279
 Output: 45c02fc01519814156e94adbd1902279 -- pause
 ```
-## License
-[The MIT License](LICENSE.md)
