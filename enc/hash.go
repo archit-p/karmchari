@@ -7,7 +7,7 @@ import (
 )
 
 // get unique hash value
-func GetHashString() string {
+func GetHashString() *string {
 	// current time for seed
 	t := time.Now().String()
 
@@ -15,5 +15,7 @@ func GetHashString() string {
 	hashBytes := md5.Sum([]byte(t))
 
 	// return hex encoded string
-	return hex.EncodeToString(hashBytes[:])
+	encHash := hex.EncodeToString(hashBytes[:])
+
+	return &encHash
 }

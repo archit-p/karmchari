@@ -1,72 +1,27 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/archit-p/karmchari/jobserver"
 )
 
-// job related information
-// jState : to denote current state of job
-// jType : to denote the type of job
-type jobMeta struct {
-	Type string
-	State string
-}
-
-// map to store the job states
-var jobDict map[string]jobMeta
-
-// a simple way to simulate job table
-// tracks currently running jobs
-// kills marked jobs
-func trackJobs() {
-	var prevTime, curTime time.Time
-
-	prevTime = time.Now()
-	for {
-		curTime = time.Now()
-		if (curTime.Sub(prevTime).Seconds() > 1) {
-			log.Println("Current jobs")
-			fmt.Println("----------------------------------------------------------------")
-			fmt.Println("|                 ID                 |    State   |    Type    |")
-			fmt.Println("----------------------------------------------------------------")
-
-			for it, job := range jobDict {
-				fmt.Printf("| %34s | %10s | %10s |\n", it, job.State, job.Type)
-				if job.State == "kill" {
-					delete(jobDict, it)
-				}
-			}
-
-			fmt.Println("----------------------------------------------------------------")
-			prevTime = curTime
-		}
-	}
-}
-
 func main() {
-	// initialize the jobDict structure
-	jobDict = make(map[string]jobMeta)
-
-	// start a routine to track current jobes
-	go trackJobs()
-
+	// configuration parameters for the server
 	port := "51463"
+	host := "redis:6379"
+
+	// initialize a new server
+	js, err := jobserver.New(port, host)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	log.Printf("Karmchari -- Service started on port %s!", port)
 
-	// create a new mux router and add routes
-	r := mux.NewRouter()
-	r.HandleFunc("/registerJob", registerJob).Methods("POST")
-	r.HandleFunc("/jobState", updateJobState).Methods("POST")
-	r.HandleFunc("/jobState", readJobState).Methods("GET")
-
 	// launch the server
-	log.Fatalf("Exited: %s", http.ListenAndServe(":" + port, r))
+	log.Fatalf("Exited: %s", http.ListenAndServe(":" + js.ServerPort, js.Router))
 
 	// exit from the server
 	log.Println("Karmchari -- Service stopped!")
