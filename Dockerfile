@@ -6,7 +6,7 @@ ADD . /app
 
 WORKDIR /app
 
-RUN go build .
+RUN go build -o karmchari .
 
-CMD ["/app/karmchari"]
+CMD ["/app/karmchari", "-port", "51463", "-shost", "redis:6379"]
 
