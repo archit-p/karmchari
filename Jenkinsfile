@@ -9,7 +9,7 @@ pipeline {
 	stages {
 		stage('Compile') {
 			steps {
-				sh 'go build'
+				sh 'sudo docker build -t karmchari .'
 			}
 		}
 	}
